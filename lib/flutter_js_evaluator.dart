@@ -9,7 +9,12 @@ class FlutterJsEvaluator {
 
   /// property: whether return variable with name `property`
   static Future<dynamic> evaluate(String source, {String property}) async {
-    final String result = await _channel.invokeMethod('evaluate', {'source': source, 'property': property});
+    Map<String, dynamic> args = Map();
+    args['source'] = source;
+    if(property?.isNotEmpty == true) {
+      args['property'] = property;
+    }
+    final String result = await _channel.invokeMethod('evaluate', args);
     return jsonDecode(result);
   }
 }
