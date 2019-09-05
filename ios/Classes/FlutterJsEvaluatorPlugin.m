@@ -18,7 +18,7 @@
             source = [source stringByAppendingString:[NSString stringWithFormat: @";JSON.stringify(%@)", call.arguments[@"property"]]];
         } else {
             source = [NSString stringWithFormat:@"JSON.stringify(eval(%@))",[FlutterJsEvaluatorPlugin stringEscapeJavascript:source]];
-            NSLog(@"source:\n%@", source);
+//            NSLog(@"source:\n%@", source);
         }
         JSValue *value = [context evaluateScript:source];
         NSString *str = [value toString];
