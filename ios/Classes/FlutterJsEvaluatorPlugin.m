@@ -15,9 +15,9 @@
         NSString *source = call.arguments[@"source"];
         JSContext *context = [[JSContext alloc] init];
         if([call.arguments objectForKey:@"property"]) {
-            source = [source stringByAppendingString:[NSString stringWithFormat: @";JSON.stringify(%@)", call.arguments[@"property"]]];
+            source = [source stringByAppendingString:[NSString stringWithFormat: @";var __r__=%@;__r__===undefined?'undefined':JSON.stringify(__r__)", call.arguments[@"property"]]];
         } else {
-            source = [NSString stringWithFormat:@"JSON.stringify(eval(%@))",[FlutterJsEvaluatorPlugin stringEscapeJavascript:source]];
+            source = [NSString stringWithFormat:@"var __r__=eval(%@);__r__===undefined?'undefined':JSON.stringify(__r__)",[FlutterJsEvaluatorPlugin stringEscapeJavascript:source]];
 //            NSLog(@"source:\n%@", source);
         }
         JSValue *value = [context evaluateScript:source];
