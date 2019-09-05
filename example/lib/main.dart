@@ -115,7 +115,10 @@ var _0x4415=['wrQzJjzDiQ==','CFPCnjAm','wogDw5RgaA==','wqo/QBLCojLCvw==','OioI',
             children: <Widget>[
               Align(
                 child: RaisedButton(
-                  onPressed: () => FlutterJsEvaluator.evaluate(_['source'], property: _['property']).then((__) => setState(() => _['result'] = __)),
+                  onPressed: () {
+                    _['result'] = null;
+                    FlutterJsEvaluator.evaluate(_['source'], property: _['property']).then((__) => setState(() => _['result'] = __));
+                  },
                   child: Text(_['label']),
                 ),
               ),
@@ -127,7 +130,7 @@ var _0x4415=['wrQzJjzDiQ==','CFPCnjAm','wogDw5RgaA==','wqo/QBLCojLCvw==','OioI',
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: Text(jsonEncode(_['result'])),
+                  child: Text(jsonEncode(_['result']??'')),
                 ),
               ),
             ],
