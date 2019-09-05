@@ -13,6 +13,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  String lastAssignSource = 'a=1';
   String dateSource = '''
   new Date();
   ''';
@@ -22,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   String undefinedSource = 'var a = undefined';
   String nullSource = 'var a = null;';
   String arraySource = '[1, 2, "hello"]';
-  String objectSource = 'var a = {"a":1, "b": 2, "c": {"a": "a", "b": [1]}}';
+  String objectSource = 'var a = {"a":1, "b": 2, "c": {"a": "a", "b": [1], "c": new Date()}}';
   String fnSource = '''
 function add(x, y) {
   return x + y;
@@ -37,6 +38,11 @@ var _0x4415=['wrQzJjzDiQ==','CFPCnjAm','wogDw5RgaA==','wqo/QBLCojLCvw==','OioI',
   @override
   void initState() {
     super.initState();
+    data.add({
+      'label': 'Last Assign',
+      'source': lastAssignSource,
+      'result': null,
+    });
     data.add({
       'label': 'Date',
       'source': dateSource,
