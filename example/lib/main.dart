@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_js_evaluator/flutter_js_evaluator.dart';
@@ -113,14 +112,22 @@ var _0x4415=['wrQzJjzDiQ==','CFPCnjAm','wogDw5RgaA==','wqo/QBLCojLCvw==','OioI',
           children: data.map((_) => Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Align(
-                child: RaisedButton(
-                  onPressed: () {
-                    _['result'] = null;
-                    FlutterJsEvaluator.evaluate(_['source'], property: _['property']).then((__) => setState(() => _['result'] = __));
-                  },
-                  child: Text(_['label']),
-                ),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: () {
+                      _['result'] = 'N/A';
+                      _['coast'] = 'N/A';
+                      int begin = DateTime.now().millisecondsSinceEpoch;
+                      FlutterJsEvaluator.evaluate(_['source'], property: _['property']).then((__) => setState(() {
+                        _['result'] = __;
+                        _['coast'] = DateTime.now().millisecondsSinceEpoch - begin;
+                      }));
+                    },
+                    child: Text(_['label']),
+                  ),
+                  Text('coast:${_['coast']}ms'),
+                ],
               ),
               Container(
                 width: double.infinity,
@@ -130,7 +137,7 @@ var _0x4415=['wrQzJjzDiQ==','CFPCnjAm','wogDw5RgaA==','wqo/QBLCojLCvw==','OioI',
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: Text(jsonEncode(_['result']??'')),
+                  child: Text(jsonEncode(_['result'])),
                 ),
               ),
             ],
