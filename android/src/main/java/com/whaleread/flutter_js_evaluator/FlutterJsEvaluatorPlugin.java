@@ -78,6 +78,9 @@ public class FlutterJsEvaluatorPlugin implements MethodCallHandler {
         String result;
         try {
             result = context.evaluate(source, "flutter_js_evaluator.js", String.class);
+        } catch(Exception e) {
+            result = null;
+            Log.e("Flutter_JS_Evaluator", "failed to evaluate js", e);
         } finally {
             try {
                 context.close();
