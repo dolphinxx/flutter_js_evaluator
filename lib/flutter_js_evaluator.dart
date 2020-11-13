@@ -7,6 +7,14 @@ class FlutterJsEvaluator {
   static const MethodChannel _channel =
       const MethodChannel('flutter_js_evaluator');
 
+  /// preload js libraries
+  static Future<bool> preload(String source) async {
+    if(source?.isNotEmpty != true) {
+      return false;
+    }
+    return await _channel.invokeMethod('preload', source);
+  }
+
   /// property: whether return variable with name `property`
   static Future<dynamic> evaluate(String source, {String property}) async {
     Map<String, dynamic> args = Map();

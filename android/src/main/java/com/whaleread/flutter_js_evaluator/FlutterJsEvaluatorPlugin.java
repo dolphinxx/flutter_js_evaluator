@@ -15,6 +15,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 public class FlutterJsEvaluatorPlugin implements MethodCallHandler, FlutterPlugin {
+    private static String lib = "";
 
     private static void init(BinaryMessenger messenger) {
         MethodChannel channel = new MethodChannel(messenger, "flutter_js_evaluator");
@@ -41,9 +42,9 @@ public class FlutterJsEvaluatorPlugin implements MethodCallHandler, FlutterPlugi
             String source = call.argument("source");
             String property = call.hasArgument("property") ? call.<String>argument("property") : null;
             if(property != null) {
-                source += ";var __r__=" + property + ";__r__===undefined?'undefined':JSON.stringify(__r__)";
+                source = lib + source + ";var __r__=" + property + ";__r__===undefined?'undefined':JSON.stringify(__r__)";
             } else {
-                source = "var __r__=eval(" + JSONObject.quote(source) + ");__r__ === undefined ? 'undefined':JSON.stringify(__r__)";
+                source = lib + "var __r__=eval(" + JSONObject.quote(source) + ");__r__ === undefined ? 'undefined':JSON.stringify(__r__)";
             }
 //            Log.d("----", source);
 //            String str = evaluateThroughJ2V8(source);
@@ -51,6 +52,9 @@ public class FlutterJsEvaluatorPlugin implements MethodCallHandler, FlutterPlugi
 //            String str = evaluateThroughLiquidCore(source);
             result.success(str != null && str.equals("undefined") ? "null" : str);
 //            result.success(evaluateThroughRhino(source, property));
+        } else if(call.method.equals("preload")) {
+            String source = (String)call.arguments;
+            lib += source;
         } else {
             result.notImplemented();
         }

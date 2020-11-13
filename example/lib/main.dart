@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:flutter_js_evaluator/flutter_js_evaluator.dart';
 
@@ -23,6 +24,9 @@ class _MyAppState extends State<MyApp> {
   String nullSource = 'var a = null;';
   String arraySource = '[1, 2, "hello"]';
   String objectSource = 'var a = {"a":1, "b": 2, "c": {"a": "a", "b": [1], "c": new Date()}}';
+  String md5Source = 'md5("123")';
+  String btoaSource = 'btoa("123")';
+  String atobSource = 'atob("MTIz")';
   String fnSource = '''
 function add(x, y) {
   return x + y;
@@ -37,6 +41,7 @@ var _0x4415=['wrQzJjzDiQ==','CFPCnjAm','wogDw5RgaA==','wqo/QBLCojLCvw==','OioI',
   @override
   void initState() {
     super.initState();
+    rootBundle.loadString('assets/js_command_lib.js', cache: false).then((value) => FlutterJsEvaluator.preload(value));
     data.add({
       'label': 'Last Assign',
       'source': lastAssignSource,
@@ -91,6 +96,21 @@ var _0x4415=['wrQzJjzDiQ==','CFPCnjAm','wogDw5RgaA==','wqo/QBLCojLCvw==','OioI',
     data.add({
       'label': 'Function',
       'source': fnSource,
+      'result': null,
+    });
+    data.add({
+      'label': 'Md5',
+      'source': md5Source,
+      'result': null,
+    });
+    data.add({
+      'label': 'btoa',
+      'source': btoaSource,
+      'result': null,
+    });
+    data.add({
+      'label': 'atob',
+      'source': atobSource,
       'result': null,
     });
     data.add({
