@@ -2,6 +2,9 @@
 #import <JavaScriptCore/JavaScriptCore.h>
 
 @implementation FlutterJsEvaluatorPlugin
+
+NSString* lib = @"";
+
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* channel = [FlutterMethodChannel
                                      methodChannelWithName:@"flutter_js_evaluator"
@@ -15,9 +18,9 @@
         NSString *source = call.arguments[@"source"];
         JSContext *context = [[JSContext alloc] init];
         if([call.arguments objectForKey:@"property"]) {
-            source = [source stringByAppendingString:[NSString stringWithFormat: @";var __r__=%@;__r__===undefined?'undefined':JSON.stringify(__r__)", call.arguments[@"property"]]];
+            source = [NSString stringWithFormat: @"%@;%@;var __r__=%@;__r__===undefined?'undefined':JSON.stringify(__r__)", lib, source, call.arguments[@"property"]];
         } else {
-            source = [NSString stringWithFormat:@"var __r__=eval(%@);__r__===undefined?'undefined':JSON.stringify(__r__)",[FlutterJsEvaluatorPlugin stringEscapeJavascript:source]];
+            source = [NSString stringWithFormat:@"%@;var __r__=eval(%@);__r__===undefined?'undefined':JSON.stringify(__r__)",lib,[FlutterJsEvaluatorPlugin stringEscapeJavascript:source]];
 //            NSLog(@"source:\n%@", source);
         }
         JSValue *value = [context evaluateScript:source];
@@ -26,6 +29,8 @@
             str = @"null";
         }
         result(str);
+    } else if([@"preload" isEqualToString:call.method]) {
+        lib = [lib stringByAppendingString:call.arguments];
     } else {
         result(FlutterMethodNotImplemented);
     }
