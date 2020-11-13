@@ -2,18 +2,37 @@ package com.whaleread.flutter_js_evaluator;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONObject;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-public class FlutterJsEvaluatorPlugin implements MethodCallHandler {
-    public static void registerWith(Registrar registrar) {
-        MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_js_evaluator");
+public class FlutterJsEvaluatorPlugin implements MethodCallHandler, FlutterPlugin {
+
+    private static void init(BinaryMessenger messenger) {
+        MethodChannel channel = new MethodChannel(messenger, "flutter_js_evaluator");
         channel.setMethodCallHandler(new FlutterJsEvaluatorPlugin());
+    }
+
+    public static void registerWith(Registrar registrar) {
+        init(registrar.messenger());
+    }
+
+    @Override
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+        init(binding.getBinaryMessenger());
+    }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+
     }
 
     @Override
