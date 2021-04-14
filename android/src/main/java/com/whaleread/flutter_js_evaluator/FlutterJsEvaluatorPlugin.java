@@ -55,6 +55,7 @@ public class FlutterJsEvaluatorPlugin implements MethodCallHandler, FlutterPlugi
         } else if(call.method.equals("preload")) {
             String source = (String)call.arguments;
             lib += source;
+            result.success(true);
         } else {
             result.notImplemented();
         }

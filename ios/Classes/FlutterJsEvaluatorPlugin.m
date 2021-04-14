@@ -31,6 +31,7 @@ NSString* lib = @"";
         result(str);
     } else if([@"preload" isEqualToString:call.method]) {
         lib = [lib stringByAppendingString:call.arguments];
+        result(@YES);
     } else {
         result(FlutterMethodNotImplemented);
     }
